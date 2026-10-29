@@ -1,4 +1,5 @@
 import sys
+import math
 
 def read_meas(filename : str) -> dict:
     city_stats = {}
@@ -21,3 +22,16 @@ def read_meas(filename : str) -> dict:
         print(f"Файл с таким именем не найден", file=sys.stderr)
         sys.exit(1)
     return city_stats
+
+
+
+def dict_normalization(city_stats: dict) -> dict:
+    normalized = {}
+    for station in city_stats:
+        avg = city_stats[station][2] / city_stats[station][3]
+        if avg >= 0:
+            rounded_avg = math.floor(avg * 10 + 0.5) / 10
+        else:
+            rounded_avg = int(avg * 10 - 0.5) / 10
+        normalized[station] = (city_stats[station][1], rounded_avg, city_stats[station][0])
+    return normalized
