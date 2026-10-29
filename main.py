@@ -43,3 +43,18 @@ def sorting_printing(normalized: dict) -> None:
     for key in sorted_keys:
         min_st, avg_st, max_st = normalized[key]
         print(f"{key};{min_st:.1f};{avg_st:.1f};{max_st:.1f}", end="\n")
+
+
+
+def main():
+    if len(sys.argv) != 2:
+        print("ошибка: укажите путь к файлу.", file=sys.stderr)
+        sys.exit(1)
+    filename = sys.argv[1]
+    stats = read_meas(filename)
+    normalized_stats = dict_normalization(stats)
+    sorting_printing(normalized_stats)
+
+
+if __name__ == "__main__":
+    main()
