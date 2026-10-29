@@ -35,3 +35,11 @@ def dict_normalization(city_stats: dict) -> dict:
             rounded_avg = int(avg * 10 - 0.5) / 10
         normalized[station] = (city_stats[station][1], rounded_avg, city_stats[station][0])
     return normalized
+
+
+
+def sorting_printing(normalized: dict) -> None:
+    sorted_keys = sorted(normalized.keys())
+    for key in sorted_keys:
+        min_st, avg_st, max_st = normalized[key]
+        print(f"{key};{min_st:.1f};{avg_st:.1f};{max_st:.1f}", end="\n")
