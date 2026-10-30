@@ -29,10 +29,7 @@ def dict_normalization(city_stats: dict) -> dict:
     normalized = {}
     for station in city_stats:
         avg = city_stats[station][2] / city_stats[station][3]
-        if avg >= 0:
-            rounded_avg = math.floor(avg * 10 + 0.5) / 10
-        else:
-            rounded_avg = int(avg * 10 - 0.5) / 10
+        rounded_avg = math.floor(avg * 10 + 0.5) / 10
         normalized[station] = (city_stats[station][1], rounded_avg, city_stats[station][0])
     return normalized
 
