@@ -1,22 +1,22 @@
 import sys
 import math
 
-def read_meas(filename : str) -> dict:
+def read_measurements(filename: str) -> dict:
     city_stats = {}
     try:
         with open(filename, "rb") as f:
             for line in f:
                 text = line.decode("utf-8").split(";")
                 station = text[0]
-                temp = float(text[1])
+                temperature = float(text[1])
                 if station not in city_stats:
-                    city_stats[station] = [temp, temp, temp, 1] # max, min, sum, quant
+                    city_stats[station] = [temperature, temperature, temperature, 1] # max, min, sum, quant
                 else:
-                    if temp > city_stats[station][0]:
-                        city_stats[station][0] = temp
-                    if temp < city_stats[station][1]:
-                        city_stats[station][1] = temp
-                    city_stats[station][2] += temp
+                    if temperature > city_stats[station][0]:
+                        city_stats[station][0] = temperature
+                    if temperature < city_stats[station][1]:
+                        city_stats[station][1] = temperature
+                    city_stats[station][2] += temperature
                     city_stats[station][3] += 1
     except FileNotFoundError:
         print(f"Файл с таким именем не найден", file=sys.stderr)
@@ -25,7 +25,7 @@ def read_meas(filename : str) -> dict:
 
 
 
-def dict_normalization(city_stats: dict) -> dict:
+def normalize_dict(city_stats: dict) -> dict:
     normalized = {}
     for station in city_stats:
         avg = city_stats[station][2] / city_stats[station][3]
@@ -35,11 +35,11 @@ def dict_normalization(city_stats: dict) -> dict:
 
 
 
-def sorting_printing(normalized: dict) -> None:
+def print_sorted(normalized: dict) -> None:
     sorted_keys = sorted(normalized.keys())
     for key in sorted_keys:
-        min_st, avg_st, max_st = normalized[key]
-        print(f"{key};{min_st:.1f};{avg_st:.1f};{max_st:.1f}", end="\n")
+        min_by_station, avg_by_station, max_by_station = normalized[key]
+        print(f"{key};{min_by_station:.1f};{avg_by_station:.1f};{max_by_station:.1f}", end="\n")
 
 
 
@@ -48,9 +48,9 @@ def main():
         print("ошибка: укажите путь к файлу.", file=sys.stderr)
         sys.exit(1)
     filename = sys.argv[1]
-    stats = read_meas(filename)
-    normalized_stats = dict_normalization(stats)
-    sorting_printing(normalized_stats)
+    stats = read_measurements(filename)
+    normalized_stats = normalize_dict(stats)
+    print_sorted(normalized_stats)
 
 
 if __name__ == "__main__":
