@@ -4,9 +4,9 @@ import math
 def read_measurements(filename: str) -> dict:
     city_stats = {}
     try:
-        with open(filename, "rb") as f:
+        with open(filename, "r", encoding="utf-8") as f:
             for line in f:
-                text = line.decode("utf-8").split(";")
+                text = line.split(";")
                 station = text[0]
                 temperature = float(text[1])
                 if station not in city_stats:
@@ -26,12 +26,12 @@ def read_measurements(filename: str) -> dict:
 
 
 def normalize_dict(city_stats: dict) -> dict:
-    normalized = {}
     for station in city_stats:
-        avg = city_stats[station][2] / city_stats[station][3]
+        max_temperature, min_temperature, total_sum, count = city_stats[station]
+        avg = total_sum / count
         rounded_avg = math.floor(avg * 10 + 0.5) / 10
-        normalized[station] = (city_stats[station][1], rounded_avg, city_stats[station][0])
-    return normalized
+        city_stats[station] = (min_temperature, rounded_avg, max_temperature)
+    return city_stats
 
 
 
